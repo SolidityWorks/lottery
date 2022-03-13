@@ -111,12 +111,12 @@ input::-webkit-inner-spin-button{
 }
 
 .default__button:hover .default__button--wrapper, .default__button:active .default__button--wrapper,
-.draw:active .default__button--wrapper{
+.draw.default__button:active .default__button--wrapper{
     color: #ffe600;
     background: #393BD7;
 }
 
-.draw:active{
+.draw.default__button:active{
     box-shadow: none;
 }
 
@@ -158,7 +158,6 @@ input::-webkit-inner-spin-button{
     width: 100%;
     margin-top: 5rem;
     display: flex;
-    align-items: flex-start;
     justify-content: space-between;
 }
 
@@ -210,6 +209,7 @@ input::-webkit-inner-spin-button{
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 }
 
 .main__wrapper--stats{
@@ -451,6 +451,10 @@ input::-webkit-inner-spin-button{
 
 .main__coin--inner.win .main__coin.win, .main__coin--inner.lose .main__coin.lose{
     display: block;
+}
+
+.main__coin, .main__coin--inner{
+    pointer-events: none;
 }
 
 /* Анимация падающих монет */
