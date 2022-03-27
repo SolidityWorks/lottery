@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "./static/css/main.3f33a2c6.css",
+    "main.js": "./static/js/main.e442d4f6.js",
+    "static/media/AxiformaBold.otf": "./static/media/AxiformaBold.4a328a7114209c6ce850.otf",
+    "static/media/AxiformaSemiBold.otf": "./static/media/AxiformaSemiBold.7e3ede3ea2c29e695d0d.otf",
+    "index.html": "./index.html",
+    "main.3f33a2c6.css.map": "./static/css/main.3f33a2c6.css.map",
+    "main.e442d4f6.js.map": "./static/js/main.e442d4f6.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3f33a2c6.css",
+    "static/js/main.e442d4f6.js"
+  ]
+}
