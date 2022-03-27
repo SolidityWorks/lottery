@@ -1,16 +1,27 @@
 import React from 'react';
 
 import Countdown from '../../Components/Countdown/Countdown.jsx';
+import Account from "../../Components/Web3/Account";
 
 const Lotto = () => {
 	const [buy, setBuy] = React.useState(false);
+	const [buyBtn, setBuyBtn] = React.useState('Connect wallet');
 
+	let acc;
 	const buyTickets = () => {
 		setBuy(true);
+		acc = (async () => await Account())()
+		if (acc) {
+			setBuyBtn('Buy')
+		}
 	}
 
 	const close = () => {
 		setBuy(false);
+	}
+
+	const buyTicket = () => {
+
 	}
 
 	return(
@@ -53,8 +64,8 @@ const Lotto = () => {
 										</p>
 									</div>
 
-									<button className="button buy__button">
-										Connect wallet
+									<button onClick={buyTicket} className="button buy__button">
+										{buyBtn}
 									</button>
 								</div>
 							</div>

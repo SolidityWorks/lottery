@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
-
-import {getAccounts} from "../../contracts/funcs";
+import Account from "../Web3/Account";
 
 const gamesArr = [
 	{
@@ -20,10 +19,12 @@ const Header = () => {
 	const [headerActive, setHeaderActive] = React.useState(false);
 	const [activeGame, setActiveGame] = React.useState(1);
 	const location = useLocation();
+	const [wallerTxt, setWalletTxt] = React.useState('Connect wallet');
 
-	const [account, setAccount] = React.useState('Connect Wallet');
 	const connectWalletHandler = async () => {
-		setAccount(await getAccounts())
+		if (wallerTxt === 'Connect wallet') {
+			setWalletTxt(await Account())
+		}
 	}
 
 	React.useEffect(() => {
@@ -62,7 +63,7 @@ const Header = () => {
 
 		            <button onClick={connectWalletHandler} className="button default__button">
 		                <span className="default__button--wrapper">
-		                    {account}
+		                    {wallerTxt}
 		                </span>
 		            </button>
 		        </div>
