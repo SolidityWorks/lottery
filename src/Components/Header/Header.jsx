@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
 
+import {getAccounts} from "../../contracts/funcs";
+
 const gamesArr = [
 	{
 		id: 1,
@@ -18,6 +20,11 @@ const Header = () => {
 	const [headerActive, setHeaderActive] = React.useState(false);
 	const [activeGame, setActiveGame] = React.useState(1);
 	const location = useLocation();
+
+	const [account, setAccount] = React.useState('Connect Wallet');
+	const connectWalletHandler = async () => {
+		setAccount(await getAccounts())
+	}
 
 	React.useEffect(() => {
 		gamesArr.map((d) => {
@@ -53,9 +60,9 @@ const Header = () => {
 		                </div>
 		            </div>}
 
-		            <button className="button default__button">
+		            <button onClick={connectWalletHandler} className="button default__button">
 		                <span className="default__button--wrapper">
-		                    Connect wallet
+		                    {account}
 		                </span>
 		            </button>
 		        </div>
