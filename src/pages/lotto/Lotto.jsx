@@ -2,10 +2,13 @@ import React from 'react';
 
 import Countdown from '../../Components/Countdown/Countdown.jsx';
 import Account from "../../Components/Web3/Account";
+import {allGames, playersCount, ticketsCount} from "../../contracts/funcs";
 
 const Lotto = () => {
 	const [buy, setBuy] = React.useState(false);
 	const [buyBtn, setBuyBtn] = React.useState('Connect wallet');
+	const [tc, setTc] = React.useState(0);
+	const [pc, setPc] = React.useState(0);
 
 	let acc;
 	const buyTickets = () => {
@@ -20,7 +23,13 @@ const Lotto = () => {
 		setBuy(false);
 	}
 
-	const buyTicket = () => {
+	React.useEffect(() => {
+		setPc(ticketsCount)
+		setTc(playersCount)
+		// allGames
+	})
+
+	const buyTicket = async () => {
 
 	}
 
@@ -117,7 +126,7 @@ const Lotto = () => {
 
 							<div className="next__item">
 								<p className="next__item--title">
-									82
+									{pc}
 								</p>
 
 								<p className="next__item--text yellow">
@@ -127,7 +136,7 @@ const Lotto = () => {
 
 							<div className="next__item">
 								<p className="next__item--title">
-									356
+									{tc}
 								</p>
 
 								<p className="next__item--text yellow">

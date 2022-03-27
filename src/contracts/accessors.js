@@ -2,7 +2,7 @@ export const readContract = async (func, args = []) => {
   try {
     const result = await func(...args);
     console.log('Reading...');
-    console.log(result);
+    // console.log(result);
     return result;
   } catch (e) {
     console.log(e);
