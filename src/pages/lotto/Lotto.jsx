@@ -3,6 +3,7 @@ import React from 'react';
 import Countdown from '../../Components/Countdown/Countdown.jsx';
 import Account from "../../Components/Web3/Account";
 import {allGames, playersCount, ticketsCount} from "../../contracts/funcs";
+const {ethereum} = window;
 
 const Lotto = () => {
 	const [buy, setBuy] = React.useState(false);
@@ -23,10 +24,12 @@ const Lotto = () => {
 		setBuy(false);
 	}
 
-	React.useEffect(() => {
-		setPc(ticketsCount)
-		setTc(playersCount)
-		// allGames
+	React.useEffect(async () => {
+		if (ethereum) { // MitaMask installed
+			setPc(ticketsCount)
+			setTc(playersCount)
+			console.log(allGames)
+		}
 	})
 
 	const buyTicket = async () => {
