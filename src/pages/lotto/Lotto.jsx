@@ -26,11 +26,12 @@ const Lotto = () => {
 
 	React.useEffect(async () => {
 		if (ethereum) { // MitaMask installed
-			setPc(ticketsCount)
-			setTc(playersCount)
-			console.log(allGames)
+			const tp = [await ticketsCount(), await playersCount()]
+			setPc(await ticketsCount())
+			setTc(await playersCount())
+			console.log(await allGames())
 		}
-	})
+	}, [acc])
 
 	const buyTicket = async () => {
 

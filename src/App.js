@@ -12,8 +12,8 @@ const App = () => {
     return(
         <Routes>
             <Route path='/' element={<Layout />}>
-                <Route index element={<Flipper />} />
-                <Route path='lotto' element={<Lotto />} />
+                <Route index element={<Lotto />} />
+                <Route path='flipper' element={<Flipper />} />
                 <Route path='*' element={<Navigate to="/" />} />
             </Route>
         </Routes>

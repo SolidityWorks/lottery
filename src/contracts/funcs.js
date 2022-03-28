@@ -21,21 +21,23 @@ export const getCounter = async () => {
   console.log('Counter: ', tr);
   return tr;
 }
-
-const tickets = async () => {
-  const tickets = await readContract(contract.members);
-  console.log('Tickets: ', tickets);
+let tickets;
+const getTickets = async () => {
+  if (!tickets) {
+    tickets = await readContract(contract.members);
+    console.log('Tickets: ', tickets);
+  }
   return tickets;
 }
 
-export const ticketsCount = async () => tickets().length;
+export const ticketsCount = async () => (await getTickets()).length;
 
-const players = async () => new Set(await tickets())
+const players = async () => new Set(await getTickets())
 
-export const playersCount = async () => await players().size
+export const playersCount = async () => (await players()).size
 
 export const allGames = async () => {
   const games = await readContract(contract.allGames);
-  console.log('Games: ', games);
+  // console.log('Games: ', games);
   return games;
 }
