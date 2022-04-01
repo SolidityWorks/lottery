@@ -4,6 +4,7 @@ import Countdown from '../../Components/Countdown/Countdown.jsx';
 
 const Lotto = () => {
 	const [buy, setBuy] = React.useState(false);
+	const [yourTickets, setYourTickets] = React.useState(false);
 
 	const buyTickets = () => {
 		setBuy(true);
@@ -13,8 +14,90 @@ const Lotto = () => {
 		setBuy(false);
 	}
 
+	const viewTickets = () => {
+		setYourTickets(true);
+	}
+
+	const closeTickets = () => {
+		setYourTickets(false);
+	}
+
 	return(
 		<div className="lotto">
+			<div className={`modal${yourTickets ? ' active' : ''}`}>
+				<div className="buy__inner">
+					<div className="buy__inner--top game">
+						<p className="buy__title game">
+							Round 488
+						</p>
+
+						<img onClick={closeTickets} className="buy__close" src="/assets/img/close-yellow.svg" alt="Закрыть" />
+					</div>
+
+					<div className="buy__inner--content">
+						<div className="your__tickets">
+							<p className="buy__text yellow">
+								Your tickets
+							</p>
+
+							<div className="your__tickets--inner">
+								<p className="your__tickets--item">
+									100
+								</p>
+
+								<p className="your__tickets--item">
+									101
+								</p>
+
+								<p className="your__tickets--item">
+									102
+								</p>
+
+								<p className="your__tickets--item">
+									103
+								</p>
+
+								<p className="your__tickets--item">
+									104
+								</p>
+
+								<p className="your__tickets--item">
+									105
+								</p>
+
+								<p className="your__tickets--item">
+									106
+								</p>
+
+								<p className="your__tickets--item">
+									107
+								</p>
+
+								<p className="your__tickets--item">
+									108
+								</p>
+
+								<p className="your__tickets--item">
+									109
+								</p>
+
+								<p className="your__tickets--item">
+									110
+								</p>
+
+								<p className="your__tickets--item">
+									111
+								</p>
+							</div>
+						</div>
+
+						<button className="button buy__button game">
+							Buy tickets
+						</button>
+					</div>
+				</div>
+			</div>
+
 			<div className="container">
 				<div className="lotto__inner">
 					<div className="lotto__content">
@@ -45,16 +128,16 @@ const Lotto = () => {
 
 									<div className="buy__wrapper buy__box">
 										<p className="buy__wrapper--title">
-											Cost (BNB)
+											Cost (USD)
 										</p>
 
 										<p className="buy__wrapper--value">
-											0 BNB
+											0 $
 										</p>
 									</div>
 
 									<button className="button buy__button">
-										Connect wallet
+										Buy tickets
 									</button>
 								</div>
 							</div>
@@ -103,6 +186,22 @@ const Lotto = () => {
 
 						<div className="next__content">
 							<Countdown hours={2} minutes={32} seconds={5} />
+
+							<div className="next__item">
+								<p className="next__text">
+									Your tickets
+								</p>
+
+								<button className="button next__text yellow" onClick={viewTickets}>
+									View
+								</button>
+
+								<button className="button default__button" onClick={buyTickets}>
+								    <span className="default__button--wrapper">
+								        Buy tickets
+								    </span>
+								</button>
+							</div>
 
 							<div className="next__item">
 								<p className="next__item--title">
