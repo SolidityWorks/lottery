@@ -486,15 +486,14 @@ input::-webkit-inner-spin-button{
     width: 200px;
     height: 200px;
     position: relative;
-    animation: flip 2s infinite;
-    animation-delay: 1s;
     margin-top: 8rem;
     transition: .2s linear;
     border-radius: 50%;
 }
 
-.main__coin--inner.active{
-    animation: flip 2s infinite;
+.one, .two{
+    animation: flip 2s forwards;
+    animation-delay: 1s;
 }
 
 @keyframes flip{
@@ -506,11 +505,11 @@ input::-webkit-inner-spin-button{
     }
 }
 
-.back, .active .front{
+.back, .two .front{
     transform: rotateY(180deg);
 }
 
-.active .back{
+.two .back{
     transform: rotateY(0deg);
 }
 
@@ -523,12 +522,12 @@ input::-webkit-inner-spin-button{
     left: 0;
     top: 0;
 }
-.front, .active .back{
-    animation: front-rotation 2s linear infinite;
+.one .front, .two .back{
+    animation: front-rotation 2s linear forwards;
 }
 
-.back, .active .front{
-    animation: back-rotation 2s linear infinite;
+.one .back, .two .front{
+    animation: back-rotation 2s linear forwards;
 }
 
 @keyframes front-rotation{
