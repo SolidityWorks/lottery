@@ -22,6 +22,11 @@ const Lotto = () => {
 		setYourTickets(false);
 	}
 
+	const buyTicketsModal = () => {
+		setBuy(true);
+		setYourTickets(false);
+	}
+
 	return(
 		<div className="lotto">
 			<div className={`modal${yourTickets ? ' active' : ''}`}>
@@ -91,7 +96,7 @@ const Lotto = () => {
 							</div>
 						</div>
 
-						<button className="button buy__button game">
+						<button onClick={buyTicketsModal} className="button buy__button game">
 							Buy tickets
 						</button>
 					</div>
