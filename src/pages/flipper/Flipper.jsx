@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-import {Link} from 'react-router-dom';
 
 const Flipper = () => {
 	React.useEffect(() => {
@@ -24,6 +23,20 @@ const Flipper = () => {
 	        $(".win__scene").removeClass("active");
 	        $(".lose__scene").removeClass("active");
 	    });
+
+        $(".one__button").on("click", function(){
+            $(".main__coin--inner").removeClass("two");
+            setTimeout(() => {
+                $(".main__coin--inner").addClass("one");
+            }, 100);
+        });
+
+        $(".two__button").on("click", function(){
+            $(".main__coin--inner").removeClass("one");
+            setTimeout(() => {
+                $(".main__coin--inner").addClass("two");
+            }, 100);
+        });
 	}, []);
 
 	return(
@@ -122,13 +135,13 @@ const Flipper = () => {
 
                             <div className="main__item">
                                 <div className="main__button--inner">
-                                    <button className="button default__button draw bet__button win__button">
+                                    <button className="button default__button draw bet__button one__button">
                                         <span className="default__button--wrapper">
                                             One
                                         </span>
                                     </button>
 
-                                    <button className="button default__button draw bet__button lose__button">
+                                    <button className="button default__button draw bet__button two__button">
                                         <span className="default__button--wrapper">
                                             Two
                                         </span>
@@ -161,7 +174,7 @@ const Flipper = () => {
                                     </button>
                                 </div>
 
-                                <button className="button default__button draw button__draw go__button">
+                                <button className="button default__button draw button__draw">
                                     <span className="default__button--wrapper">
                                         Draw
                                     </span>
