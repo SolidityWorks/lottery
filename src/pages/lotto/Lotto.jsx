@@ -1,108 +1,44 @@
 import React from 'react';
 
 import Countdown from '../../Components/Countdown/Countdown.jsx';
+import Account from "../../Components/Web3/Account";
+import {allGames, playersCount, ticketsCount} from "../../contracts/funcs";
+const {ethereum} = window;
 
 const Lotto = () => {
 	const [buy, setBuy] = React.useState(false);
-	const [yourTickets, setYourTickets] = React.useState(false);
+	const [buyBtn, setBuyBtn] = React.useState('Connect wallet');
+	const [tc, setTc] = React.useState(0);
+	const [pc, setPc] = React.useState(0);
 
+	let acc;
 	const buyTickets = () => {
 		setBuy(true);
+		acc = (async () => await Account())()
+		if (acc) {
+			setBuyBtn('Buy')
+		}
 	}
 
 	const close = () => {
 		setBuy(false);
 	}
 
-	const viewTickets = () => {
-		setYourTickets(true);
-	}
+	React.useEffect(async () => {
+		if (ethereum) { // MitaMask installed
+			const tp = [await ticketsCount(), await playersCount()]
+			setPc(await ticketsCount())
+			setTc(await playersCount())
+			console.log(await allGames())
+		}
+	}, [acc])
 
-	const closeTickets = () => {
-		setYourTickets(false);
-	}
+	const buyTicket = async () => {
 
-	const buyTicketsModal = () => {
-		setBuy(true);
-		setYourTickets(false);
 	}
 
 	return(
 		<div className="lotto">
-			<div className={`modal${yourTickets ? ' active' : ''}`}>
-				<div className="buy__inner">
-					<div className="buy__inner--top game">
-						<p className="buy__title game">
-							Round 488
-						</p>
-
-						<img onClick={closeTickets} className="buy__close" src="/assets/img/close-yellow.svg" alt="Закрыть" />
-					</div>
-
-					<div className="buy__inner--content">
-						<div className="your__tickets">
-							<p className="buy__text yellow">
-								Your tickets
-							</p>
-
-							<div className="your__tickets--inner">
-								<p className="your__tickets--item">
-									100
-								</p>
-
-								<p className="your__tickets--item">
-									101
-								</p>
-
-								<p className="your__tickets--item">
-									102
-								</p>
-
-								<p className="your__tickets--item">
-									103
-								</p>
-
-								<p className="your__tickets--item">
-									104
-								</p>
-
-								<p className="your__tickets--item">
-									105
-								</p>
-
-								<p className="your__tickets--item">
-									106
-								</p>
-
-								<p className="your__tickets--item">
-									107
-								</p>
-
-								<p className="your__tickets--item">
-									108
-								</p>
-
-								<p className="your__tickets--item">
-									109
-								</p>
-
-								<p className="your__tickets--item">
-									110
-								</p>
-
-								<p className="your__tickets--item">
-									111
-								</p>
-							</div>
-						</div>
-
-						<button onClick={buyTicketsModal} className="button buy__button game">
-							Buy tickets
-						</button>
-					</div>
-				</div>
-			</div>
-
 			<div className="container">
 				<div className="lotto__inner">
 					<div className="lotto__content">
@@ -133,16 +69,16 @@ const Lotto = () => {
 
 									<div className="buy__wrapper buy__box">
 										<p className="buy__wrapper--title">
-											Cost (USD)
+											Cost (BNB)
 										</p>
 
 										<p className="buy__wrapper--value">
-											0 $
+											0 BNB
 										</p>
 									</div>
 
-									<button className="button buy__button">
-										Buy tickets
+									<button onClick={buyTicket} className="button buy__button">
+										{buyBtn}
 									</button>
 								</div>
 							</div>
@@ -193,24 +129,8 @@ const Lotto = () => {
 							<Countdown hours={2} minutes={32} seconds={5} />
 
 							<div className="next__item">
-								<p className="next__text">
-									Your tickets
-								</p>
-
-								<button className="button next__text yellow" onClick={viewTickets}>
-									View
-								</button>
-
-								<button className="button default__button" onClick={buyTickets}>
-								    <span className="default__button--wrapper">
-								        Buy tickets
-								    </span>
-								</button>
-							</div>
-
-							<div className="next__item">
 								<p className="next__item--title">
-									82
+									{pc}
 								</p>
 
 								<p className="next__item--text yellow">
@@ -220,7 +140,7 @@ const Lotto = () => {
 
 							<div className="next__item">
 								<p className="next__item--title">
-									356
+									{tc}
 								</p>
 
 								<p className="next__item--text yellow">

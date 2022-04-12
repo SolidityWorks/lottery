@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
+import Account from "../Web3/Account";
 
 const gamesArr = [
 	{
@@ -16,9 +17,15 @@ const gamesArr = [
 
 const Header = () => {
 	const [headerActive, setHeaderActive] = React.useState(false);
-	const [walletActive, setWalletActive] = React.useState(false);
 	const [activeGame, setActiveGame] = React.useState(1);
 	const location = useLocation();
+	const [wallerTxt, setWalletTxt] = React.useState('Connect wallet');
+
+	const connectWalletHandler = async () => {
+		if (wallerTxt === 'Connect wallet') {
+			setWalletTxt(await Account())
+		}
+	}
 
 	React.useEffect(() => {
 		gamesArr.map((d) => {
@@ -30,13 +37,9 @@ const Header = () => {
 		setHeaderActive(!headerActive);
 	}
 
-	const setWallet = () => {
-		setWalletActive(!walletActive);
-	}
-
 	return(
 		<header className="header">
-			<div className={`menu__shadow${headerActive || walletActive ? ' active' : ''}`}></div>
+			<div className={`menu__shadow${headerActive ? ' active' : ''}`}></div>
 		    <div className="container">
 		        <div className="header__inner">
 		        	{!headerActive
@@ -58,37 +61,11 @@ const Header = () => {
 		                </div>
 		            </div>}
 
-		            {/*<button className="button default__button">
+		            <button onClick={connectWalletHandler} className="button default__button">
 		                <span className="default__button--wrapper">
-		                    Connect wallet
+		                    {wallerTxt}
 		                </span>
-		            </button>*/}
-
-		            <div className="wallet__wrapper">
-		            	<button className="button default__button yellow" onClick={setWallet}>
-		            		<span className="default__button--wrapper active">
-		            			0x531D...0223234
-
-		            			<img className="default__button--img" src="assets/img/logo-figure.svg" alt="Картинка" />
-		            		</span>
-		            	</button>
-
-		            	<div className={`wallet__drop${walletActive ? ' active' : ''}`}>
-		            		<div className="wallet__value">
-		            			0xFDbBeB3A646264eBfcFB5F65647147F0aDce0223
-		            		</div>
-
-		            		<div className="wallet__link">
-		            			Recent Transaction
-		            		</div>
-
-		            		<div className="wallet__link">
-		            			Disconnect
-
-		            			<img src="assets/img/logout.svg" alt="Выйти" />
-		            		</div>
-		            	</div>
-		            </div>
+		            </button>
 		        </div>
 		    </div>
 		</header>
