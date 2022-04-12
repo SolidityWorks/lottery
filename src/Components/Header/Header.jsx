@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
-import Account from "../Web3/Account";
+import {ethereum} from "../../contracts/getContract";
+import {bsc, chainAdd, chainCheck, chainSet, getContract} from "../../contracts/funcs";
 
 const gamesArr = [
 	{
@@ -19,11 +20,34 @@ const Header = () => {
 	const [headerActive, setHeaderActive] = React.useState(false);
 	const [activeGame, setActiveGame] = React.useState(1);
 	const location = useLocation();
-	const [wallerTxt, setWalletTxt] = React.useState('Connect wallet');
 
-	const connectWalletHandler = async () => {
-		if (wallerTxt === 'Connect wallet') {
-			setWalletTxt(await Account())
+	const [accAddress, setAccAddress] = React.useState(ethereum.selectedAddress/*deprecated*/);
+	const [chainId, setChainId] = React.useState(ethereum.chainId);
+	const [buttonTxt, setButtonTxt] = React.useState();
+	const [contract, setContract] = React.useState();
+
+	ethereum.on('chainChanged', (_chainId) => setChainId(_chainId));
+	ethereum.on('accountsChanged', (accounts) => setAccAddress(accounts));
+
+	const walletConnectHandler = async (force = true) => {
+		if (ethereum) {
+			/** get acc from metamask */
+			const method = force ? 'eth_requestAccounts' : 'eth_accounts'
+			try {
+				const accounts = await ethereum.request({'method': method});
+				if (!chainCheck() && force) {
+					await chainSet()
+				}
+				setAccAddress(accounts[0]);
+				console.log(accounts[0])
+				setContract(await getContract())
+				return Boolean(accounts)
+			} catch (e) {
+				console.log(e)
+			}
+		}
+		else {
+			alert('You need install MetaMask')
 		}
 	}
 
@@ -32,6 +56,15 @@ const Header = () => {
 			location.pathname === d.path && setActiveGame(d.id);
 		})
 	}, [location]);
+
+	React.useEffect(() => {
+		async function fresh() {
+			if(await walletConnectHandler(false)) {
+				setChainId(ethereum.chainId)
+			}
+		}
+		fresh()
+	}, [accAddress])
 
 	const setHeader = () => {
 		setHeaderActive(!headerActive);
@@ -61,9 +94,9 @@ const Header = () => {
 		                </div>
 		            </div>}
 
-		            <button onClick={connectWalletHandler} className="button default__button">
+		            <button onClick={accAddress ? null : walletConnectHandler} className="button default__button">
 		                <span className="default__button--wrapper">
-		                    {wallerTxt}
+		                    {accAddress || 'Connect Wallet'}
 		                </span>
 		            </button>
 		        </div>

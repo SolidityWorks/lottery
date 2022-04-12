@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Countdown from '../../Components/Countdown/Countdown.jsx';
-import Account from "../../Components/Web3/Account";
+import {chainCheck, lastGame} from "../../contracts/funcs";
 import {allGames, playersCount, ticketsCount} from "../../contracts/funcs";
 const {ethereum} = window;
 
@@ -14,8 +14,7 @@ const Lotto = () => {
 	let acc;
 	const buyTickets = () => {
 		setBuy(true);
-		acc = (async () => await Account())()
-		if (acc) {
+		if (chainCheck()) {
 			setBuyBtn('Buy')
 		}
 	}
@@ -29,6 +28,7 @@ const Lotto = () => {
 			const tp = [await ticketsCount(), await playersCount()]
 			setPc(await ticketsCount())
 			setTc(await playersCount())
+			console.log(await lastGame())
 			console.log(await allGames())
 		}
 	}, [acc])
