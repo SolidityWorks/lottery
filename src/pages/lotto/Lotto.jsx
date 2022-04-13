@@ -211,6 +211,21 @@ const Lotto = ({ account, walletConnectHandler }) => {
                 )}
               </div>
               <div className="next__item">
+								<p className="next__text">
+									Your tickets
+								</p>
+
+								<button className="button next__text yellow" onClick={()=> {}}>
+									View
+								</button>
+
+								<button className="button default__button" onClick={buyTickets}>
+								    <span className="default__button--wrapper">
+								        Buy tickets
+								    </span>
+								</button>
+							</div>
+              <div className="next__item">
                 <p className="next__item--title">{pc}</p>
 
                 <p className="next__item--text yellow">players in this game</p>
