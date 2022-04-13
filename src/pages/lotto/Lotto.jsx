@@ -18,7 +18,6 @@ const Lotto = ({ account, walletConnectHandler }) => {
   const [counterLoading, setCounterLoading] = React.useState(false);
   const [timer, setTimer] = React.useState(false);
 
-  let acc;
   const buyTickets = () => {
     setBuy(true);
     if (chainCheck() && ethereum._state?.accounts[0]) {
@@ -44,7 +43,7 @@ const Lotto = ({ account, walletConnectHandler }) => {
       }
     }
     fetchData();
-  }, []);
+  }, [account]);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -64,12 +63,12 @@ const Lotto = ({ account, walletConnectHandler }) => {
           setCurrentTicketPrice(ticketPrice);
         } catch (error) {
           setTotalGamesLoading(false);
-          console.log("Error: ", error);
+          console.error("Error: ", error);
         }
       }
     }
     fetchData();
-  }, [acc]);
+  }, [account]);
 
   const unixConverter = (timestamp) => {
     const date = new Date(timestamp * 1000);
