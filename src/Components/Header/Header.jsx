@@ -16,40 +16,18 @@ const gamesArr = [
 	}
 ]
 
-const Header = () => {
+const Header = ({walletConnectHandler}) => {
 	const [headerActive, setHeaderActive] = React.useState(false);
 	const [activeGame, setActiveGame] = React.useState(1);
 	const location = useLocation();
 
-	const [accAddress, setAccAddress] = React.useState(ethereum.selectedAddress/*deprecated*/);
-	const [chainId, setChainId] = React.useState(ethereum.chainId);
+	const [accAddress, setAccAddress] = React.useState(ethereum?.selectedAddress/*deprecated*/);
+	const [chainId, setChainId] = React.useState(ethereum?.chainId);
 	const [buttonTxt, setButtonTxt] = React.useState();
 	const [contract, setContract] = React.useState();
 
-	ethereum.on('chainChanged', (_chainId) => setChainId(_chainId));
-	ethereum.on('accountsChanged', (accounts) => setAccAddress(accounts));
-
-	const walletConnectHandler = async (force = true) => {
-		if (ethereum) {
-			/** get acc from metamask */
-			const method = force ? 'eth_requestAccounts' : 'eth_accounts'
-			try {
-				const accounts = await ethereum.request({'method': method});
-				if (!chainCheck() && force) {
-					await chainSet()
-				}
-				setAccAddress(accounts[0]);
-				console.log(accounts[0])
-				setContract(await getContract())
-				return Boolean(accounts)
-			} catch (e) {
-				console.log(e)
-			}
-		}
-		else {
-			alert('You need install MetaMask')
-		}
-	}
+    ethereum?.on('chainChanged', (_chainId) => setChainId(_chainId));
+	ethereum?.on('accountsChanged', (accounts) => setAccAddress(accounts));
 
 	React.useEffect(() => {
 		gamesArr.map((d) => {
@@ -57,6 +35,18 @@ const Header = () => {
 		})
 	}, [location]);
 
+
+	React.useEffect(() => {
+		(async () => {
+			const [account, contract] = await walletConnectHandler();
+			console.log('info', account, contract);
+			setAccAddress(account[0]);
+			setContract(contract);
+		})()
+
+	}
+	,[walletConnectHandler])
+	
 	React.useEffect(() => {
 		async function fresh() {
 			if(await walletConnectHandler(false)) {
@@ -64,7 +54,7 @@ const Header = () => {
 			}
 		}
 		fresh()
-	}, [accAddress])
+	}, [accAddress, walletConnectHandler])
 
 	const setHeader = () => {
 		setHeaderActive(!headerActive);
@@ -77,11 +67,11 @@ const Header = () => {
 		        <div className="header__inner">
 		        	{!headerActive
 		        	? <div className="header__logo" onClick={setHeader}>
-		            	<img className="logo__img" src="/assets/img/logo-figure.svg" alt="picture" />
+		            	<img className="logo__img" src="/assets/img/logo-figure.svg" alt="logo" />
 		                <span className="yellow">SMART</span>{gamesArr.map((d, id) => <p key={id}>{activeGame === d.id && d.name}</p>)}
 		            </div>
 		        	: <div className="header__logo" onClick={setHeader}>
-		            	<img className="logo__img flip" src="/assets/img/logo-figure.svg" alt="picture" />
+		            	<img className="logo__img flip" src="/assets/img/logo-figure.svg" alt="logo" />
 
 		            	{gamesArr.map((d, id) => activeGame === d.id && <Link key={id} className="header__logo" to={d.path}>
 		                	<span className="yellow">SMART</span>{d.name}
