@@ -1,11 +1,18 @@
 import React from "react";
 
 import Countdown from "../../Components/Countdown/Countdown.jsx";
-import {chainCheck, getCounter, lastGame, buyTicket} from "../../contracts/funcs";
+import {
+  chainCheck,
+  getCounter,
+  lastGame,
+  buyTicket,
+} from "../../contracts/funcs";
 import { allGames, playersCount, ticketsCount } from "../../contracts/funcs";
 const { ethereum } = window;
 
 const Lotto = ({ account, walletConnectHandler }) => {
+  const [yourTickets, setYourTickets] = React.useState(false);
+
   const [currentGame, setCurrentGame] = React.useState(0);
   const [currentTicketPrice, setCurrentTicketPrice] = React.useState(0);
   const [ticketsWillBuy, setTicketsWillBuy] = React.useState("");
@@ -18,6 +25,19 @@ const Lotto = ({ account, walletConnectHandler }) => {
   const [totalGamesLoading, setTotalGamesLoading] = React.useState(false);
   const [counterLoading, setCounterLoading] = React.useState(false);
   const [timer, setTimer] = React.useState(false);
+
+  const viewTickets = () => {
+    setYourTickets(true);
+  };
+
+  const closeTickets = () => {
+    setYourTickets(false);
+  };
+
+  const buyTicketsModal = () => {
+    setBuy(true);
+    setYourTickets(false);
+  };
 
   const buyTickets = () => {
     setBuy(true);
@@ -83,9 +103,61 @@ const Lotto = ({ account, walletConnectHandler }) => {
     return `${year}-${month}-${day}`;
   };
 
-
   return (
     <div className="lotto">
+      <div className={`modal${yourTickets ? " active" : ""}`}>
+        <div className="buy__inner">
+          <div className="buy__inner--top game">
+            <p className="buy__title game">Round 488</p>
+
+            <img
+              onClick={closeTickets}
+              className="buy__close"
+              src="/assets/img/close-yellow.svg"
+              alt="Закрыть"
+            />
+          </div>
+
+          <div className="buy__inner--content">
+            <div className="your__tickets">
+              <p className="buy__text yellow">Your tickets</p>
+
+              <div className="your__tickets--inner">
+                <p className="your__tickets--item">100</p>
+
+                <p className="your__tickets--item">101</p>
+
+                <p className="your__tickets--item">102</p>
+
+                <p className="your__tickets--item">103</p>
+
+                <p className="your__tickets--item">104</p>
+
+                <p className="your__tickets--item">105</p>
+
+                <p className="your__tickets--item">106</p>
+
+                <p className="your__tickets--item">107</p>
+
+                <p className="your__tickets--item">108</p>
+
+                <p className="your__tickets--item">109</p>
+
+                <p className="your__tickets--item">110</p>
+
+                <p className="your__tickets--item">111</p>
+              </div>
+            </div>
+
+            <button
+              onClick={buyTicketsModal}
+              className="button buy__button game"
+            >
+              Buy tickets
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="container">
         <div className="lotto__inner">
           <div className="lotto__content">
@@ -128,13 +200,15 @@ const Lotto = ({ account, walletConnectHandler }) => {
                     <div className="buy__wrapper buy__box">
                       <p className="buy__wrapper--title">Cost (BNB)</p>
 
-                      <p className="buy__wrapper--value">
-                        {totalCost} BNB
-                      </p>
+                      <p className="buy__wrapper--value">{totalCost} BNB</p>
                     </div>
 
                     <button
-                      onClick={account ? () => buyTicket(totalCost, ticketsWillBuy) : walletConnectHandler}
+                      onClick={
+                        account
+                          ? () => buyTicket(totalCost, ticketsWillBuy)
+                          : walletConnectHandler
+                      }
                       className="button buy__button"
                     >
                       {buyBtn}
@@ -211,20 +285,16 @@ const Lotto = ({ account, walletConnectHandler }) => {
                 )}
               </div>
               <div className="next__item">
-								<p className="next__text">
-									Your tickets
-								</p>
+                <p className="next__text">Your tickets</p>
 
-								<button className="button next__text yellow" onClick={()=> {}}>
-									View
-								</button>
+                <button className="button next__text yellow" onClick={viewTickets}>
+                  View
+                </button>
 
-								<button className="button default__button" onClick={buyTickets}>
-								    <span className="default__button--wrapper">
-								        Buy tickets
-								    </span>
-								</button>
-							</div>
+                <button className="button default__button" onClick={buyTickets}>
+                  <span className="default__button--wrapper">Buy tickets</span>
+                </button>
+              </div>
               <div className="next__item">
                 <p className="next__item--title">{pc}</p>
 

@@ -929,7 +929,7 @@ input::-webkit-inner-spin-button {
 }
 
 .history__item.history__title:nth-child(6n) {
-    border-right: none;
+  border-right: none;
 }
 
 .history__loader {
@@ -1036,11 +1036,11 @@ input::-webkit-inner-spin-button {
 }
 
 .next__content--empty {
-    font-size: 1.5rem;
-    color: #fff;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  font-size: 1.5rem;
+  color: #fff;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .lotto__content {
