@@ -1,7 +1,7 @@
 import React from "react";
 
 import Countdown from "../../Components/Countdown/Countdown.jsx";
-import { chainCheck, lastGame } from "../../contracts/funcs";
+import {chainCheck, getCounter, lastGame} from "../../contracts/funcs";
 import { allGames, playersCount, ticketsCount } from "../../contracts/funcs";
 const { ethereum } = window;
 
@@ -31,12 +31,12 @@ const Lotto = () => {
         // MetaMask installed
         try {
           setTotalGamesLoading(true);
-          const tp = [await ticketsCount(), await playersCount()];
-          setPc(await ticketsCount());
-          setTc(await playersCount());
+          setTc(await ticketsCount());
+          setPc(await playersCount());
           console.log(await lastGame());
           setTotalGames(await allGames());
           setTotalGamesLoading(false);
+          console.log(await getCounter());
         } catch (error) {
           setTotalGamesLoading(false);
           console.log("Error: ", error);

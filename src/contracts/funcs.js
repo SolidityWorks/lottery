@@ -56,10 +56,9 @@ export const getContract = async () => {
 }
 
 
-
-
+let lg;
 export const lastGame = async () => {
-  let lg = await readContract((ctr || await getContract()).lastGame);
+  lg = await readContract((ctr || await getContract()).lastGame);
   lg = gameFormat(lg)
   console.log('Last game: ', lg);
   return lg;
@@ -75,7 +74,7 @@ const gameFormat = (game) => {
 }
 
 export const getCounter = async () => {
-  const ts = -lastGame.ended + Date.now()/1000;
+  const ts = (lg || await lastGame()).ended - Date.now()/1000;
   let tr = {
     days: parseInt(ts/3600/24),
     hours: parseInt(ts/3600),
