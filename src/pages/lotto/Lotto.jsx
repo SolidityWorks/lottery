@@ -29,11 +29,18 @@ const Lotto = () => {
     async function fetchData() {
       if (ethereum) {
         // MetaMask installed
-        const tp = [await ticketsCount(), await playersCount()];
-        setPc(await ticketsCount());
-        setTc(await playersCount());
-        console.log(await lastGame());
-        setTotalGames(await allGames());
+        try {
+          setTotalGamesLoading(true);
+          const tp = [await ticketsCount(), await playersCount()];
+          setPc(await ticketsCount());
+          setTc(await playersCount());
+          console.log(await lastGame());
+          setTotalGames(await allGames());
+          setTotalGamesLoading(false);
+        } catch (error) {
+          setTotalGamesLoading(false);
+          console.log("Error: ", error);
+        }
       }
     }
     fetchData();
@@ -237,20 +244,21 @@ const Lotto = () => {
             </div>
 
             <div className="history__content">
-              <div className="history__item">Game ID</div>
+              <div className="history__item history__title">Game ID</div>
 
-              <div className="history__item">Date</div>
+              <div className="history__item history__title">Date</div>
 
-              <div className="history__item">Winning ticket</div>
+              <div className="history__item history__title">Winning ticket</div>
 
-              <div className="history__item">Prize</div>
+              <div className="history__item history__title">Prize</div>
 
-              <div className="history__item">Winner</div>
+              <div className="history__item history__title">Winner</div>
 
-              <div className="history__item">Tx</div>
+              <div className="history__item history__title">Tx</div>
 
-              {totalGames.length
-                ? totalGames.map((item, index) => {
+              {!totalGamesLoading ? (
+                totalGames.length ? (
+                  totalGames.map((item, index) => {
                     const winner_hash = "0x218hi12dhgiu12x12xt1289tx1212x12",
                       transaction_hash = "0x218hi12dhgiu12x12xt1289tx1212x12"; //Demo data
                     return (
@@ -273,13 +281,13 @@ const Lotto = () => {
                           {item.ticketPrice}BNB
                         </div>
 
-                        <div className="history__item">
+                        <div className="history__item" title={winner_hash}>
                           {winner_hash.slice(0, 4) +
                             "..." +
                             winner_hash.slice(-5)}
                         </div>
 
-                        <div className="history__item">
+                        <div className="history__item" title={transaction_hash}>
                           {transaction_hash.slice(0, 4) +
                             "..." +
                             transaction_hash.slice(-5)}
@@ -287,7 +295,25 @@ const Lotto = () => {
                       </React.Fragment>
                     );
                   })
-                : null}
+                ) : (
+                  <div className="history__empty">
+                    <p className="history__empty--text">No Games Yet</p>
+                  </div>
+                )
+              ) : (
+                <div className="history__loader">
+                  <div className="lds-roller">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
