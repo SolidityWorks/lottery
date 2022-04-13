@@ -1,23 +1,30 @@
 import React from "react";
 
 import Countdown from "../../Components/Countdown/Countdown.jsx";
-import {chainCheck, getCounter, lastGame} from "../../contracts/funcs";
+import { chainCheck, getCounter, lastGame } from "../../contracts/funcs";
 import { allGames, playersCount, ticketsCount } from "../../contracts/funcs";
 const { ethereum } = window;
 
-const Lotto = () => {
+const Lotto = ({ account, walletConnectHandler }) => {
+  const [currentGame, setCurrentGame] = React.useState(0);
+  const [currentTicketPrice, setCurrentTicketPrice] = React.useState(0);
+  const [ticketsWillBuy, setTicketsWillBuy] = React.useState('');
   const [buy, setBuy] = React.useState(false);
   const [buyBtn, setBuyBtn] = React.useState("Connect wallet");
   const [totalGames, setTotalGames] = React.useState([]);
   const [tc, setTc] = React.useState(0);
   const [pc, setPc] = React.useState(0);
   const [totalGamesLoading, setTotalGamesLoading] = React.useState(false);
+  const [counterLoading, setCounterLoading] = React.useState(false);
+  const [timer, setTimer] = React.useState(false);
 
   let acc;
   const buyTickets = () => {
     setBuy(true);
-    if (chainCheck()) {
+    if (chainCheck() && ethereum._state?.accounts[0]) {
       setBuyBtn("Buy");
+    } else {
+      setBuyBtn("Connect wallet");
     }
   };
 
@@ -27,16 +34,34 @@ const Lotto = () => {
 
   React.useEffect(() => {
     async function fetchData() {
+      setCounterLoading(true);
+      try {
+        setTimer(await getCounter());
+        setCounterLoading(false);
+      } catch (error) {
+        setCounterLoading(false);
+        console.log("Error: ", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  React.useEffect(() => {
+    async function fetchData() {
       if (ethereum) {
         // MetaMask installed
         try {
           setTotalGamesLoading(true);
+          const reversedTotalGames = (await allGames()).reverse();
+          setTotalGames(reversedTotalGames);
+          setTotalGamesLoading(false);
+
           setTc(await ticketsCount());
           setPc(await playersCount());
-          console.log(await lastGame());
-          setTotalGames(await allGames());
-          setTotalGamesLoading(false);
-          console.log(await getCounter());
+
+          let { started, ticketPrice } = await lastGame();
+          setCurrentGame({ started });
+          setCurrentTicketPrice(ticketPrice);
         } catch (error) {
           setTotalGamesLoading(false);
           console.log("Error: ", error);
@@ -94,15 +119,22 @@ const Lotto = () => {
                     <textarea
                       className="buy__textarea"
                       placeholder="0"
+                      value={ticketsWillBuy}
+                      onChange={(e) => setTicketsWillBuy(e.target.value)}
                     ></textarea>
 
                     <div className="buy__wrapper buy__box">
                       <p className="buy__wrapper--title">Cost (BNB)</p>
 
-                      <p className="buy__wrapper--value">0 BNB</p>
+                      <p className="buy__wrapper--value">
+                        {ticketsWillBuy * currentTicketPrice} BNB
+                      </p>
                     </div>
 
-                    <button onClick={buyTicket} className="button buy__button">
+                    <button
+                      onClick={account ? buyTicket : walletConnectHandler}
+                      className="button buy__button"
+                    >
                       {buyBtn}
                     </button>
                   </div>
@@ -137,7 +169,6 @@ const Lotto = () => {
               )}
             </div>
           </div>
-
           <div className="how__inner nextdraw__inner">
             <img
               className="nextdraw__stars nextdraw__stars1"
@@ -153,8 +184,30 @@ const Lotto = () => {
             <p className="how__title yellow">Next draw in:</p>
 
             <div className="next__content">
-              <Countdown hours={2} minutes={32} seconds={5} />
-
+              <div className="next__item">
+                {!counterLoading ? (
+                  timer ? (
+                    <Countdown timer={timer} />
+                  ) : (
+                    <div className="next__content--empty">
+                      There is no timer
+                    </div>
+                  )
+                ) : (
+                  <div className="next__loader">
+                    <div className="lds-roller">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  </div>
+                )}
+              </div>
               <div className="next__item">
                 <p className="next__item--title">{pc}</p>
 

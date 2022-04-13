@@ -1035,6 +1035,14 @@ input::-webkit-inner-spin-button {
   margin-top: 0.5rem;
 }
 
+.next__content--empty {
+    font-size: 1.5rem;
+    color: #fff;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .lotto__content {
   display: flex;
   justify-content: center;
