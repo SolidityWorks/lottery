@@ -2,7 +2,7 @@ import React from "react";
 
 import Countdown from "../../Components/Countdown/Countdown.jsx";
 import { chainCheck, lastGame } from "../../contracts/funcs";
-import { allGames, playersCount, ticketsCount } from "../../contracts/funcs";
+import { allGames, playersCount, ticketsCount, getCounter } from "../../contracts/funcs";
 const { ethereum } = window;
 
 const Lotto = () => {
@@ -35,7 +35,8 @@ const Lotto = () => {
           setPc(await ticketsCount());
           setTc(await playersCount());
           console.log(await lastGame());
-          setTotalGames(await allGames());
+          const reversedTotalGames = (await allGames()).reverse();
+          setTotalGames(reversedTotalGames);
           setTotalGamesLoading(false);
         } catch (error) {
           setTotalGamesLoading(false);
@@ -59,6 +60,10 @@ const Lotto = () => {
   };
 
   const buyTicket = async () => {};
+
+  (async function () {
+    getCounter()
+  })()
 
   return (
     <div className="lotto">
