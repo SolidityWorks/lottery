@@ -83,6 +83,7 @@ const Lotto = ({ account, walletConnectHandler }) => {
     return `${year}-${month}-${day}`;
   };
 
+
   return (
     <div className="lotto">
       <div className="container">
@@ -118,9 +119,9 @@ const Lotto = ({ account, walletConnectHandler }) => {
                       className="buy__textarea"
                       placeholder="0"
                       value={ticketsWillBuy}
-                      onChange={(e) => {
-                        setTicketsWillBuy(e.target.value);
-                        setTotalCost(ticketsWillBuy * currentTicketPrice);
+                      onChange={(event) => {
+                        setTicketsWillBuy(event.target.value);
+                        setTotalCost(event.target.value * currentTicketPrice);
                       }}
                     ></textarea>
 
@@ -133,7 +134,7 @@ const Lotto = ({ account, walletConnectHandler }) => {
                     </div>
 
                     <button
-                      onClick={account ? buyTicket : walletConnectHandler}
+                      onClick={account ? () => buyTicket(totalCost, ticketsWillBuy) : walletConnectHandler}
                       className="button buy__button"
                     >
                       {buyBtn}
