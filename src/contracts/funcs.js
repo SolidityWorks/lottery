@@ -116,8 +116,8 @@ const gameStart = async () => {
   return await writeContract((ctr || await getContract()).gameStart, [5000000000, 600]);
 }
 
-const buyTicket = async (qnt) => {
-  return await writeContract((ctr || await getContract()).buyTicket, [qnt]);
+export const buyTicket = async (amount, qnt) => {
+  return await writeContract((ctr || await getContract()).buyTicket, [amount, qnt]);
 }
 
 const requestRandomWords = async () => {
