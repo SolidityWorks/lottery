@@ -72,7 +72,7 @@ const Header = ({ walletConnectHandler }) => {
 
   return (
     <header className="header">
-      <div className={`menu__shadow${headerActive ? " active" : ""}`}></div>
+      <div className={`menu__shadow${headerActive || walletActive ? ' active' : ''}`}></div>
       <div className="container">
         <div className="header__inner">
           {!headerActive ? (
@@ -131,7 +131,7 @@ const Header = ({ walletConnectHandler }) => {
               }}
             >
               <span className="default__button--wrapper active">
-			  {accAddress.slice(0,5) + '...' + accAddress.slice(-5) || "Connect Wallet"}
+			  {accAddress ? accAddress?.slice(0,5) + '...' + accAddress?.slice(-5) : "Connect Wallet"}
                 <img
                   className="default__button--img"
                   src="assets/img/logo-figure.svg"
