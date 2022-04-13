@@ -142,7 +142,11 @@ const Lotto = () => {
               )}
             </div>
           </div>
-
+          <div className="current-game">
+            <div className="current-game__title">
+              <h3 className="current-game__title--text">Current game</h3>
+            </div>
+          </div>
           <div className="how__inner nextdraw__inner">
             <img
               className="nextdraw__stars nextdraw__stars1"
