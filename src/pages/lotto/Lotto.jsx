@@ -8,7 +8,8 @@ const { ethereum } = window;
 const Lotto = ({ account, walletConnectHandler }) => {
   const [currentGame, setCurrentGame] = React.useState(0);
   const [currentTicketPrice, setCurrentTicketPrice] = React.useState(0);
-  const [ticketsWillBuy, setTicketsWillBuy] = React.useState('');
+  const [ticketsWillBuy, setTicketsWillBuy] = React.useState("");
+  const [totalCost, setTotalCost] = React.useState(0);
   const [buy, setBuy] = React.useState(false);
   const [buyBtn, setBuyBtn] = React.useState("Connect wallet");
   const [totalGames, setTotalGames] = React.useState([]);
@@ -119,14 +120,17 @@ const Lotto = ({ account, walletConnectHandler }) => {
                       className="buy__textarea"
                       placeholder="0"
                       value={ticketsWillBuy}
-                      onChange={(e) => setTicketsWillBuy(e.target.value)}
+                      onChange={(e) => {
+                        setTicketsWillBuy(e.target.value);
+                        setTotalCost(ticketsWillBuy * currentTicketPrice);
+                      }}
                     ></textarea>
 
                     <div className="buy__wrapper buy__box">
                       <p className="buy__wrapper--title">Cost (BNB)</p>
 
                       <p className="buy__wrapper--value">
-                        {ticketsWillBuy * currentTicketPrice} BNB
+                        {totalCost} BNB
                       </p>
                     </div>
 
