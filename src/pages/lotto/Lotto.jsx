@@ -1,7 +1,7 @@
 import React from "react";
 
 import Countdown from "../../Components/Countdown/Countdown.jsx";
-import { chainCheck, getCounter, lastGame } from "../../contracts/funcs";
+import {chainCheck, getCounter, lastGame, buyTicket} from "../../contracts/funcs";
 import { allGames, playersCount, ticketsCount } from "../../contracts/funcs";
 const { ethereum } = window;
 
@@ -82,8 +82,6 @@ const Lotto = ({ account, walletConnectHandler }) => {
 
     return `${year}-${month}-${day}`;
   };
-
-  const buyTicket = async () => {};
 
   return (
     <div className="lotto">
