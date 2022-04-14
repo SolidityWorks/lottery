@@ -11,8 +11,11 @@ import { allGames, playersCount, ticketsCount } from "../../contracts/funcs";
 const { ethereum } = window;
 
 const Lotto = ({ account, walletConnectHandler }) => {
+  const [transactionText, setTransactionText] = React.useState("");
+  const [isNotificationActive, setIsNotificationActive] = React.useState(false);
   const [yourTickets, setYourTickets] = React.useState(false);
-
+  const [isGameActive, setIsGameActive] = React.useState(false);
+  const [isTransactionSucced, setIsTransactionSucced] = React.useState(false);
   const [currentGame, setCurrentGame] = React.useState(0);
   const [currentTicketPrice, setCurrentTicketPrice] = React.useState(0);
   const [ticketsWillBuy, setTicketsWillBuy] = React.useState("");
@@ -25,6 +28,24 @@ const Lotto = ({ account, walletConnectHandler }) => {
   const [totalGamesLoading, setTotalGamesLoading] = React.useState(false);
   const [counterLoading, setCounterLoading] = React.useState(false);
   const [timer, setTimer] = React.useState(false);
+
+  const gameToggler = (boolean) => {
+    setIsGameActive(boolean);
+  };
+
+  const successTransaction = (value) => {
+    setIsNotificationActive(true);
+    if (value === "success") {
+      setIsTransactionSucced(true);
+      setTransactionText("succeed");
+    } else {
+      setIsTransactionSucced(false);
+      setTransactionText("failed");
+    }
+    setTimeout(() => {
+      setIsNotificationActive(false);
+    }, 4000);
+  };
 
   const viewTickets = () => {
     setYourTickets(true);
@@ -51,6 +72,14 @@ const Lotto = ({ account, walletConnectHandler }) => {
   const close = () => {
     setBuy(false);
   };
+
+  React.useEffect(() => {
+    if (isGameActive) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+  }, [isGameActive]);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -105,6 +134,32 @@ const Lotto = ({ account, walletConnectHandler }) => {
 
   return (
     <div className="lotto">
+      <div
+        className={`lotto__message${isNotificationActive ? " active" : ""}${
+          isTransactionSucced ? " lotto__success" : " lotto__fail"
+        }`}
+      >
+        <div className="lotto__message-text">Transaction {transactionText}</div>
+      </div>
+      {isGameActive ? (
+        <div className="lotto__loader">
+          <div className="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div className="status">
+            Processing<span className="status__dot">.</span>
+            <span className="status__dot">.</span>
+            <span className="status__dot">.</span>
+          </div>
+        </div>
+      ) : null}
       <div className={`modal${yourTickets ? " active" : ""}`}>
         <div className="buy__inner">
           <div className="buy__inner--top game">
@@ -187,15 +242,25 @@ const Lotto = ({ account, walletConnectHandler }) => {
                       <p className="buy__wrapper--value">Tickets</p>
                     </div>
 
-                    <textarea
+                    <input
+                      min="0"
+                      max="200"
+                      type="number"
                       className="buy__textarea"
                       placeholder="0"
                       value={ticketsWillBuy}
                       onChange={(event) => {
-                        setTicketsWillBuy(event.target.value);
-                        setTotalCost(event.target.value * currentTicketPrice);
+                        const value = event.target.value;
+                        if (value <= 200) {
+                          setTicketsWillBuy(value);
+                          setTotalCost(value * currentTicketPrice);
+                        } else {
+                          setTicketsWillBuy(200);
+                          setTotalCost(200 * currentTicketPrice);
+                          alert("You can buy maximum 200 tickets");
+                        }
                       }}
-                    ></textarea>
+                    />
 
                     <div className="buy__wrapper buy__box">
                       <p className="buy__wrapper--title">Cost (BNB)</p>
@@ -206,7 +271,13 @@ const Lotto = ({ account, walletConnectHandler }) => {
                     <button
                       onClick={
                         account
-                          ? () => buyTicket(totalCost, ticketsWillBuy)
+                          ? () =>
+                              buyTicket(
+                                totalCost,
+                                ticketsWillBuy,
+                                gameToggler,
+                                successTransaction
+                              )
                           : walletConnectHandler
                       }
                       className="button buy__button"
@@ -240,6 +311,11 @@ const Lotto = ({ account, walletConnectHandler }) => {
 
                   <div className="lotto__buy" onClick={buyTickets}>
                     <div className="lotto__buy--button">Buy tickets</div>
+                  </div>
+                  <div className="ticket-price">
+                    <div className="ticket-price__text">
+                      1 ticket = {currentTicketPrice} BNB
+                    </div>
                   </div>
                 </>
               )}
@@ -287,7 +363,10 @@ const Lotto = ({ account, walletConnectHandler }) => {
               <div className="next__item">
                 <p className="next__text">Your tickets</p>
 
-                <button className="button next__text yellow" onClick={viewTickets}>
+                <button
+                  className="button next__text yellow"
+                  onClick={viewTickets}
+                >
                   View
                 </button>
 
