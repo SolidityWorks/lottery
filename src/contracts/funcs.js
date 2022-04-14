@@ -1,4 +1,4 @@
-import {readContract, writeContract} from "./accessors";
+import {readContract, writeContract, writePayableContract} from "./accessors";
 import { ethers } from 'ethers';
 
 import contractInterface from './Lottery.json';
@@ -117,7 +117,7 @@ const gameStart = async () => {
 }
 
 export const buyTicket = async (amount, qnt) => {
-  return await writeContract((ctr || await getContract()).buyTicket, [amount, qnt]);
+  return await writePayableContract((ctr || await getContract()).buyTicket, (amount*10**18).toString(), [qnt]);
 }
 
 const requestRandomWords = async () => {
