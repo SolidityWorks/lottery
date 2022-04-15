@@ -33,6 +33,10 @@ const Lotto = ({ account, walletConnectHandler }) => {
     setIsGameActive(boolean);
   };
 
+  const closeNotification = () => {
+    setIsNotificationActive(false);
+  };
+
   const successTransaction = (value) => {
     setIsNotificationActive(true);
     if (value === "success") {
@@ -68,14 +72,14 @@ const Lotto = ({ account, walletConnectHandler }) => {
       setBuyBtn("Connect wallet");
     }
   };
-  
+
   React.useEffect(() => {
     if (chainCheck() && account) {
-      setBuyBtn("Buy")
+      setBuyBtn("Buy");
     } else {
       setBuyBtn("Connect wallet");
     }
-  }, [account])
+  }, [account]);
 
   const close = () => {
     setBuy(false);
@@ -106,7 +110,7 @@ const Lotto = ({ account, walletConnectHandler }) => {
   React.useEffect(() => {
     async function fetchData() {
       if (ethereum && account) {
-        console.log('INSIDE USEEFFECT')
+        console.log("INSIDE USEEFFECT");
         // MetaMask installed
         try {
           setTotalGamesLoading(true);
@@ -148,7 +152,11 @@ const Lotto = ({ account, walletConnectHandler }) => {
           isTransactionSucced ? " lotto__success" : " lotto__fail"
         }`}
       >
-        <div className="lotto__message-text">Transaction {transactionText}</div>
+        <h6 className="lotto__message-type">
+          {transactionText === "failed" ? "Error" : "Success"}
+        </h6>
+        <p className="lotto__message-text">Transaction {transactionText}</p>
+        <button onClick={closeNotification} className="lotto__button"></button>
       </div>
       {isGameActive ? (
         <div className="lotto__loader">
@@ -278,13 +286,16 @@ const Lotto = ({ account, walletConnectHandler }) => {
                     <button
                       onClick={
                         account
-                          ? () =>
-                              buyTicket(
-                                totalCost,
-                                ticketsWillBuy,
-                                gameToggler,
-                                successTransaction
-                              )
+                          ? () => {
+                              if (Number(ticketsWillBuy)) {
+                                buyTicket(
+                                  totalCost,
+                                  ticketsWillBuy,
+                                  gameToggler,
+                                  successTransaction
+                                );
+                              }
+                            }
                           : walletConnectHandler
                       }
                       className="button buy__button"

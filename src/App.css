@@ -16,6 +16,7 @@
   font-style: normal;
 }
 
+
 body {
   margin: 0;
   padding: 0;
@@ -23,7 +24,7 @@ body {
   font-size: 1.6rem;
   background: linear-gradient(360deg, #312743 0.4%, #0066ff 100%);
   min-height: 100vh;
-  font-family: "Axiforma", sans-serif;
+  font-family: "Axiforma", Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 *,
@@ -198,6 +199,66 @@ input::-webkit-inner-spin-button {
 
 .wallet__button:last-child {
   border-bottom: none;
+}
+
+/* Предупреждение */
+
+.alert__message {
+  position: relative;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  padding: 25px 130px;
+  display: none;
+  color:#fff;
+  width: 100%;
+  background: rgba(0, 0, 0, .3);
+}
+
+.alert__message.active {
+  display: block;
+}
+
+
+.alert__message a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.alert__message-btn {
+  position: absolute;
+  top: 50%;
+  right: 90px;
+  width: 25px;
+  height: 25px;
+  transform: translateY(-50%);
+  background: transparent;
+  cursor: pointer;
+  transition: 0.2s linear;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: 0s;
+}
+
+.alert__message-btn:active {
+  opacity: 0.7;
+}
+
+.alert__message-btn:before,
+.alert__message-btn:after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 15px;
+  background: #ffffff;
+}
+
+.alert__message-btn:before {
+  transform: rotate(45deg);
+}
+.alert__message-btn:after {
+  transform: rotate(-45deg);
 }
 
 /* Шапка */
@@ -773,12 +834,14 @@ input::-webkit-inner-spin-button {
   bottom: 30px;
   left: 30px;
   z-index: 99999;
-  padding: 10px 30px;
-  border-radius: 10px;
-  transform: translateX(-120%);
-  box-shadow: 0 0 10px rgba(0,0,0,.7);
+  padding: 10px 50px 10px 30px;
+  border-radius: 5px;
+  transform: translateX(-150%);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
   transition: 0.5s transform cubic-bezier(0.97, -0.26, 0.25, 1);
-  color: white;
+  color: #272727;
+  border-left: 10px solid transparent;
+  line-height: 1;
 }
 
 .lotto__message.active {
@@ -787,15 +850,72 @@ input::-webkit-inner-spin-button {
 }
 
 .lotto__success {
-  background: #43ac47;
+  border-color: #3BC279;
+  background: #C5F7DD;
 }
 
 .lotto__fail {
-  background: rgb(255, 21, 21);
+  border-color: #E65A4C;
+  background: #FFD0CB;
+}
+
+.lotto__message-type {
+  margin: 0;
+  margin-bottom: 8px;
+  font-size: 1.4rem;
 }
 
 .lotto__message-text {
-  color: inherit;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: #000000;
+  opacity: 0.65;
+}
+
+.lotto__button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  cursor: pointer;
+  transition-duration: 0s;
+}
+
+.lotto__button:before,
+.lotto__button:after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 10px;
+  background: #646162;
+}
+
+.lotto__button:before {
+  transform: rotate(45deg);
+}
+.lotto__button:after {
+  transform: rotate(-45deg);
+}
+
+.lotto__fail .lotto__button:before,
+.lotto__fail .lotto__button:after {
+  background-color: #E65A4C;
+}
+.lotto__success .lotto__button:before,
+.lotto__success .lotto__button:after {
+  background-color: #3BC279;
+}
+
+
+.lotto__button:active {
+  opacity: 0.7;
 }
 
 .lotto__loader {
