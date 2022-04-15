@@ -136,8 +136,6 @@ const Header = ({ account, handleLogOut, walletConnectHandler }) => {
             <div className={`wallet__drop${walletActive ? " active" : ""}`}>
               <div className="wallet__value">{account}</div>
 
-              <div className="wallet__button">Recent Transaction</div>
-
               <button onClick={() => {
                 handleLogOut();
                 setActiveGame(false);

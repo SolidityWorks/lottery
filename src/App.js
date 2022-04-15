@@ -20,7 +20,7 @@ const App = () => {
             /** get acc from metamask */
             const method = force ? 'eth_requestAccounts' : 'eth_accounts'
             try {
-                const accounts = await ethereum.request({ 'method': method });
+                const accounts = await ethereum.request({ 'method': method, params: [{eth_accounts: {}}]});
                 if (!chainCheck() && force) {
                     console.log('INSIDE WALLET CONNECT HANDLER');
                     await chainSet()
