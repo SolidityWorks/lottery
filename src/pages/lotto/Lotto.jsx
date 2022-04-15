@@ -62,7 +62,7 @@ const Lotto = ({ account, walletConnectHandler }) => {
 
   const buyTickets = () => {
     setBuy(true);
-    if (chainCheck() && ethereum._state?.accounts[0]) {
+    if (chainCheck() && account) {
       setBuyBtn("Buy");
     } else {
       setBuyBtn("Connect wallet");
@@ -70,7 +70,7 @@ const Lotto = ({ account, walletConnectHandler }) => {
   };
   
   React.useEffect(() => {
-    if (chainCheck() && ethereum._state?.accounts[0]) {
+    if (chainCheck() && account) {
       setBuyBtn("Buy")
     } else {
       setBuyBtn("Connect wallet");
@@ -483,7 +483,7 @@ const Lotto = ({ account, walletConnectHandler }) => {
               <div className="history__item history__title">Tx</div>
 
               {!totalGamesLoading ? (
-                totalGames.length ? (
+                totalGames.length && account ? (
                   totalGames.map((item, index) => {
                     const winner_hash = "0x218hi12dhgiu12x12xt1289tx1212x12",
                       transaction_hash = "0x218hi12dhgiu12x12xt1289tx1212x12"; //Demo data

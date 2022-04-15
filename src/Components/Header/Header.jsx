@@ -114,7 +114,7 @@ const Header = ({ account, handleLogOut, walletConnectHandler }) => {
               className="button default__button yellow"
               onClick={() => {
                 if (account) {
-                  console.log('work');
+                  console.log("work");
                   setWallet();
                 } else {
                   walletConnectHandler();
@@ -122,25 +122,30 @@ const Header = ({ account, handleLogOut, walletConnectHandler }) => {
               }}
             >
               <span className="default__button--wrapper active">
-                {account && walletActive
+                {account
                   ? account?.slice(0, 5) + "..." + account?.slice(-5)
                   : "Connect Wallet"}
-                <img
-                  className="default__button--img"
-                  src="assets/img/logo-figure.svg"
-                  alt="Картинка"
-                />
+                {account ? (
+                  <img
+                    className="default__button--img"
+                    src="assets/img/logo-figure.svg"
+                    alt="Картинка"
+                  />
+                ) : null}
               </span>
             </button>
 
             <div className={`wallet__drop${walletActive ? " active" : ""}`}>
               <div className="wallet__value">{account}</div>
 
-              <button onClick={() => {
-                handleLogOut();
-                setActiveGame(false);
-                setHeaderActive(false);
-              }} className="wallet__button">
+              <button
+                onClick={() => {
+                  handleLogOut();
+                  setWalletActive(false);
+                  setHeaderActive(false);
+                }}
+                className="wallet__button"
+              >
                 Disconnect
                 <img src="assets/img/logout.svg" alt="Выйти" />
               </button>
