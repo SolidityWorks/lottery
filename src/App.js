@@ -16,7 +16,7 @@ const App = () => {
         setActiveAccount(false);
     }
 
-    ethereum?.on("accountsChanged", (accounts) => setActiveAccount(accounts));
+    ethereum?.on("accountsChanged", (accounts) => setActiveAccount(accounts[0]));
 
     const walletConnectHandler = async (force = true) => {
         if (ethereum) {

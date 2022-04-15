@@ -58,6 +58,8 @@ const Header = ({ account, handleLogOut, walletConnectHandler }) => {
     setHeaderActive(!headerActive);
   };
 
+  console.log('Account', account);
+
   return (
     <React.Fragment>
       {isNetworkCorrect ? (
