@@ -28,6 +28,7 @@ const Header = ({ account, handleLogOut, walletConnectHandler }) => {
   const [headerActive, setHeaderActive] = React.useState(false);
   const [activeGame, setActiveGame] = React.useState(1);
   const location = useLocation();
+  const isNetworkCorrect = chainCheck() === false;
 
   const [chainId, setChainId] = React.useState(ethereum?.chainId);
   const [buttonTxt, setButtonTxt] = React.useState();
@@ -59,8 +60,8 @@ const Header = ({ account, handleLogOut, walletConnectHandler }) => {
 
   return (
     <React.Fragment>
-      {true ? (
-        <Alert open={true}>
+      {isNetworkCorrect ? (
+        <Alert open={isNetworkCorrect}>
           You're viewing data from the main network, but your wallet is
           connected to the test network (BSC Testnet). To use OpenSea, please
           switch to{" "}
