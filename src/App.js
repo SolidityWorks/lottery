@@ -15,12 +15,15 @@ const App = () => {
     const imitateLogOut = () => {
         setActiveAccount(false);
     }
+
+    ethereum?.on("accountsChanged", (accounts) => setActiveAccount(accounts));
+
     const walletConnectHandler = async (force = true) => {
         if (ethereum) {
             /** get acc from metamask */
             const method = force ? 'eth_requestAccounts' : 'eth_accounts'
             try {
-                const accounts = await ethereum.request({ 'method': method, params: [{eth_accounts: {}}]});
+                const accounts = await ethereum.request({ 'method': method, params: [{ eth_accounts: {} }] });
                 if (!chainCheck() && force) {
                     console.log('INSIDE WALLET CONNECT HANDLER');
                     await chainSet()

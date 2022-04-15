@@ -28,12 +28,12 @@ const Header = ({ account, handleLogOut, walletConnectHandler }) => {
   const [headerActive, setHeaderActive] = React.useState(false);
   const [activeGame, setActiveGame] = React.useState(1);
   const location = useLocation();
-  const isNetworkCorrect = chainCheck() === false;
+  const isNetworkCorrect = chainCheck() === false && account;
 
   const [chainId, setChainId] = React.useState(ethereum?.chainId);
   const [buttonTxt, setButtonTxt] = React.useState();
 
-  ethereum?.on("chainChanged", (_chainId) => setChainId(_chainId));
+    ethereum?.on("chainChanged", (_chainId) => setChainId(_chainId));
 
   const setWallet = () => {
     setWalletActive(!walletActive);
