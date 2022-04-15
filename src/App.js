@@ -12,7 +12,9 @@ import Lotto from './pages/lotto/Lotto.jsx';
 
 const App = () => {
     const [activeAccount, setActiveAccount] = React.useState(null);
-
+    const imitateLogOut = () => {
+        setActiveAccount(false);
+    }
     const walletConnectHandler = async (force = true) => {
         if (ethereum) {
             /** get acc from metamask */
@@ -20,13 +22,11 @@ const App = () => {
             try {
                 const accounts = await ethereum.request({ 'method': method });
                 if (!chainCheck() && force) {
+                    console.log('INSIDE WALLET CONNECT HANDLER');
                     await chainSet()
                 }
-                if (force) {
-                    setActiveAccount(accounts[0]);
-                    const contract = await getContract();
-                    return [accounts, contract];
-                }
+                setActiveAccount(accounts[0]);
+                const contract = await getContract();
                 return Boolean(accounts);
                 // setAccAddress(accounts[0]);
                 // setContract(await getContract())
@@ -41,7 +41,7 @@ const App = () => {
     }
     return (
         <Routes>
-            <Route path='/' element={<Layout walletConnectHandler={walletConnectHandler} />}>
+            <Route path='/' element={<Layout account={activeAccount} handleLogOut={imitateLogOut} walletConnectHandler={walletConnectHandler} />}>
                 <Route index element={<Lotto account={activeAccount} walletConnectHandler={walletConnectHandler} />} />
                 <Route path='flipper' element={<Flipper />} />
                 <Route path='*' element={<Navigate to="/" />} />

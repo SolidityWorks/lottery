@@ -7,7 +7,7 @@ export const contractAddress = '0x3c2Ab815CC109c0321dc4DA31278F1a21f45F70D';
 export const abi = contractInterface.abi;
 export const {ethereum} = window;
 
-export const intToHex = (i) => '0x' + i.toString(16)
+export const intToHex = (i) => '0x' + i.toString(16);
 
 export const bsc = {
   chainId: intToHex(97),
@@ -17,7 +17,7 @@ export const bsc = {
   nativeCurrency: {symbol: 'tBNB', decimals: 18}
 }
 
-export const chainCheck = () => ethereum.chainId === bsc.chainId;
+export const chainCheck = () => ethereum?.chainId === bsc?.chainId;
 
 export const chainSet = async () => {
   try {

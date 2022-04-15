@@ -68,6 +68,14 @@ const Lotto = ({ account, walletConnectHandler }) => {
       setBuyBtn("Connect wallet");
     }
   };
+  
+  React.useEffect(() => {
+    if (chainCheck() && ethereum._state?.accounts[0]) {
+      setBuyBtn("Buy")
+    } else {
+      setBuyBtn("Connect wallet");
+    }
+  }, [account])
 
   const close = () => {
     setBuy(false);
@@ -97,7 +105,8 @@ const Lotto = ({ account, walletConnectHandler }) => {
 
   React.useEffect(() => {
     async function fetchData() {
-      if (ethereum) {
+      if (ethereum && account) {
+        console.log('INSIDE USEEFFECT')
         // MetaMask installed
         try {
           setTotalGamesLoading(true);
@@ -243,8 +252,6 @@ const Lotto = ({ account, walletConnectHandler }) => {
                     </div>
 
                     <input
-                      min="0"
-                      max="200"
                       type="number"
                       className="buy__textarea"
                       placeholder="0"
