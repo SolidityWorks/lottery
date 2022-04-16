@@ -110,7 +110,6 @@ const Lotto = ({ account, walletConnectHandler }) => {
   React.useEffect(() => {
     async function fetchData() {
       if (ethereum && account) {
-        console.log("INSIDE USEEFFECT");
         // MetaMask installed
         try {
           setTotalGamesLoading(true);

@@ -40,9 +40,8 @@ const App = () => {
                     await chainSet()
                 }
                 setActiveAccount(accounts[0]);
-                console.log('inside wallet Connect h', isExited)
-                    const contract = await getContract();
-                    console.log('CONTRACTasdasdasd', await contract.allGames());
+                    // const contract = await getContract();
+                    // console.log('contract if ', await contract.allGames());
                     return Boolean(accounts);
 
             } catch (e) {
