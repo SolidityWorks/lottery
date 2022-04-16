@@ -296,7 +296,10 @@ const Lotto = ({ account, walletConnectHandler }) => {
                                 );
                               }
                             }
-                          : walletConnectHandler
+                          : () => {
+                              localStorage.removeItem("exited");
+                              walletConnectHandler();
+                            }
                       }
                       className="button buy__button"
                     >

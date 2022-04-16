@@ -5,7 +5,8 @@ import contractInterface from './Lottery.json';
 
 export const contractAddress = '0x3c2Ab815CC109c0321dc4DA31278F1a21f45F70D';
 export const abi = contractInterface.abi;
-export const {ethereum} = window;
+const ethereum = window?.ethereum;
+
 
 export const intToHex = (i) => '0x' + i.toString(16);
 

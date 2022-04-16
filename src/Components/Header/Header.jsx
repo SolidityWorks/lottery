@@ -23,7 +23,7 @@ const gamesArr = [
   },
 ];
 
-const Header = ({ account, handleLogOut, walletConnectHandler }) => {
+const Header = ({ account, handleLogIn, isExited, handleLogOut, walletConnectHandler }) => {
   const [walletActive, setWalletActive] = React.useState(false);
   const [headerActive, setHeaderActive] = React.useState(false);
   const [activeGame, setActiveGame] = React.useState(1);
@@ -47,7 +47,7 @@ const Header = ({ account, handleLogOut, walletConnectHandler }) => {
 
   React.useEffect(() => {
     async function fresh() {
-      if (await walletConnectHandler(false)) {
+      if (isExited === null && await walletConnectHandler(false)) {
         setChainId(ethereum.chainId);
       }
     }
@@ -57,8 +57,6 @@ const Header = ({ account, handleLogOut, walletConnectHandler }) => {
   const setHeader = () => {
     setHeaderActive(!headerActive);
   };
-
-  console.log('Account', account);
 
   return (
     <React.Fragment>
@@ -126,10 +124,11 @@ const Header = ({ account, handleLogOut, walletConnectHandler }) => {
               <button
                 className="button default__button yellow"
                 onClick={() => {
-                  if (account) {
+                  if (account && isExited === null) {
                     console.log("work");
                     setWallet();
                   } else {
+                    handleLogIn();
                     walletConnectHandler();
                   }
                 }}

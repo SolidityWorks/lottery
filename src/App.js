@@ -12,28 +12,39 @@ import Lotto from './pages/lotto/Lotto.jsx';
 
 const App = () => {
     const [activeAccount, setActiveAccount] = React.useState(null);
+    const [isExited, setIsExited] = React.useState(localStorage.getItem('exited'));
+
+    const imitateLogIn = () => {
+        localStorage.removeItem('exited');
+        setIsExited(null);
+    }
+
     const imitateLogOut = () => {
         setActiveAccount(false);
+        localStorage.setItem('exited', true);
     }
 
     ethereum?.on("accountsChanged", (accounts) => setActiveAccount(accounts[0]));
-
+    
     const walletConnectHandler = async (force = true) => {
         if (ethereum) {
             /** get acc from metamask */
+            if (isExited === true) {
+                setActiveAccount(null);
+                return false;
+            }
             const method = force ? 'eth_requestAccounts' : 'eth_accounts'
             try {
                 const accounts = await ethereum.request({ 'method': method, params: [{ eth_accounts: {} }] });
                 if (!chainCheck() && force) {
-                    console.log('INSIDE WALLET CONNECT HANDLER');
                     await chainSet()
                 }
                 setActiveAccount(accounts[0]);
-                const contract = await getContract();
-                return Boolean(accounts);
-                // setAccAddress(accounts[0]);
-                // setContract(await getContract())
-                // return Boolean(accounts)
+                console.log('inside wallet Connect h', isExited)
+                    const contract = await getContract();
+                    console.log('CONTRACTasdasdasd', await contract.allGames());
+                    return Boolean(accounts);
+
             } catch (e) {
                 console.log(e)
             }
@@ -44,7 +55,7 @@ const App = () => {
     }
     return (
         <Routes>
-            <Route path='/' element={<Layout account={activeAccount} handleLogOut={imitateLogOut} walletConnectHandler={walletConnectHandler} />}>
+            <Route path='/' element={<Layout imitateLogIn={imitateLogIn} isExited={isExited} account={activeAccount} handleLogOut={imitateLogOut} walletConnectHandler={walletConnectHandler} />}>
                 <Route index element={<Lotto account={activeAccount} walletConnectHandler={walletConnectHandler} />} />
                 <Route path='flipper' element={<Flipper />} />
                 <Route path='*' element={<Navigate to="/" />} />
