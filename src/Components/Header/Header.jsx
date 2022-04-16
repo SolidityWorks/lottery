@@ -125,7 +125,6 @@ const Header = ({ account, handleLogIn, isExited, handleLogOut, walletConnectHan
                 className="button default__button yellow"
                 onClick={() => {
                   if (account && isExited === null) {
-                    console.log("work");
                     setWallet();
                   } else {
                     handleLogIn();
